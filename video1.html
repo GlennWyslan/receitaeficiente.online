@@ -67,11 +67,6 @@
     .video-js .vjs-control-bar {
       background: rgba(0, 0, 0, 0.7);
     }
-
-    /* BLOQUEIA INTERAÇÃO COM O YOUTUBE */
-    iframe {
-      pointer-events: none;
-    }
   </style>
 </head>
 <body>
@@ -84,42 +79,4 @@
       class="video-js vjs-default-skin"
       controls
       preload="auto"
-      data-setup='{
-        "techOrder": ["youtube"],
-        "sources": [{
-          "type": "video/youtube",
-          "src": "https://www.youtube.com/watch?v=A5SC9BQbdU0"
-        }],
-        "youtube": {
-          "modestbranding": 1,
-          "iv_load_policy": 3,
-          "rel": 0,
-          "controls": 1,
-          "showinfo": 0
-        }
-      }'
-    ></video>
-  </div>
-
-  <!-- Video.js JS -->
-  <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/videojs-youtube@3.0.1/dist/Youtube.min.js"></script>
-  <script>
-    const player = videojs('youtube_video');
-    const customBtn = document.getElementById('customPlayBtn');
-
-    customBtn.addEventListener('click', () => {
-      player.play();
-      customBtn.style.display = 'none';
-    });
-
-    player.on('play', () => {
-      customBtn.style.display = 'none';
-    });
-
-    player.on('ended', () => {
-      customBtn.style.display = 'block';
-    });
-  </script>
-</body>
-</html>
+      data-setup='
